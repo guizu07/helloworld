@@ -39,7 +39,7 @@ ss_port=$(shuf -i 20000-60000 -n 1)
 cat > /usr/local/etc/xray/config.json << EOF
 {
     "log": {
-        "loglevel": "warning"
+        "loglevel": "info"
     },
     "inbounds": [
         {

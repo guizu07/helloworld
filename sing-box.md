@@ -16,6 +16,7 @@ systemctl status sing-box
 ```
 
 ```bash
+#!/bin/bash
 
 # 自签证书 www.bing.com d1.awsstatic.com
 sni='www.bing.com'
