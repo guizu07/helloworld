@@ -111,8 +111,8 @@ echo ${vless_link} > sub.txt
 echo ''
 echo -e "${YELLOW}${vless_link}${NC}"
 echo ''
-# cat sub.txt | qrencode -t ANSI 
-# qrencode -t ANSI "$vless_link"
+# cat sub.txt | qrencode -t ANSIUTF8 
+# qrencode -t ANSIUTF8 "$vless_link"
 # qrencode -o qr.png "$vless_link"
 
 ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-ss"
@@ -122,11 +122,11 @@ echo ${ss_link} >> sub.txt
 echo ""
 cat sub.txt | grep -e "^vless"
 echo ""
-cat sub.txt | grep -e "^vless" | qrencode -t ANSI 
+cat sub.txt | grep -e "^vless" | qrencode -t ANSIUTF8 
 echo ""
 cat sub.txt | grep -e "^ss"
 echo ""
-cat sub.txt | grep -e "^ss" | qrencode -t ANSI 
+cat sub.txt | grep -e "^ss" | qrencode -t ANSIUTF8 
 echo ""
 #----------------------------------
 systemctl enable xray

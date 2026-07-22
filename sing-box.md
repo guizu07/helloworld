@@ -167,19 +167,19 @@ EOF
 echo ""
 cat sub.txt | grep -e "^vless"
 echo ""
-cat sub.txt | grep -e "^vless" | qrencode -t ANSI 
+cat sub.txt | grep -e "^vless" | qrencode -t ANSIUTF8 
 echo ""
 cat sub.txt | grep -e "^tuic"
 echo ""
-cat sub.txt | grep -e "^tuic" | qrencode -t ANSI 
+cat sub.txt | grep -e "^tuic" | qrencode -t ANSIUTF8 
 echo ""
 cat sub.txt | grep -e "^anytls"
 echo ""
-cat sub.txt | grep -e "^anytls" | qrencode -t ANSI 
+cat sub.txt | grep -e "^anytls" | qrencode -t ANSIUTF8 
 echo ""
 cat sub.txt | grep -e "^ss"
 echo ""
-cat sub.txt | grep -e "^ss" | qrencode -t ANSI 
+cat sub.txt | grep -e "^ss" | qrencode -t ANSIUTF8 
 echo ""
 ```
 
