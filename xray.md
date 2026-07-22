@@ -117,7 +117,9 @@ echo ''
 
 ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS"
 echo ${ss_link} >> sub.txt
+```
 
+```bash
 # echo "Here is the link for v2rayN and v2rayNG :"
 echo ""
 cat sub.txt | grep -e "^vless"
