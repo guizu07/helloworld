@@ -41,7 +41,7 @@ public_key=$(echo $keys | awk -F " " '{print $4}')
 
 # 生成 vless + reality 分享链接
 vless_link="vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#${hostname}-VLESS"
-echo ${vless_link} > vless.txt
+echo ${vless_link} > sub.txt
 
 # vless + tls
 # vless://$uuid@$IP:$port?type=tcp&encryption=none&flow=xtls-rprx-vision&security=tls&sni=${sni}&allowInsecure=1&fp=chrome#${hostname}-VLESS
@@ -51,12 +51,17 @@ tuic_port=$(shuf -i 20000-60000 -n 1)
 tuic_pwd=$(openssl rand -hex 8)
 
 tuic_link="tuic://${uuid}:${tuic_pwd}@${IP}:${tuic_port}?sni=$sni&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${hostname}-TUIC"
-echo $tuic_link > tuic.txt
+echo $tuic_link >> sub.txt
 
 # anytls
 anytls_port=$(shuf -i 20000-60000 -n 1)
 anytls_link="anytls://$uuid@${IP}:$anytls_port?&sni=$sni&insecure=1&fp=chrome#${hostname}-AnyTLS"
-echo $anytls_link > anytls.txt
+echo $anytls_link >> sub.txt
+
+# shadowsocks
+ss_port=$(shuf -i 20000-60000 -n 1) 
+ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-ss"
+echo ${ss_link} >> sub.txt
 
 # 将默认的配置文件删除，并写入
 rm -f /etc/sing-box/config.json
@@ -131,6 +136,15 @@ cat << EOF > /etc/sing-box/config.json
                 "certificate_path": "/etc/sing-box/cert.crt",
                 "key_path": "/etc/sing-box/private.key"
             }
+        },
+        {
+            "type": "shadowsocks",
+            "tag": "ss-in",
+            "listen": "127.0.0.1",
+            "listen_port": $ss_port,
+            "network": "tcp",
+            "method": "chacha20-ietf-poly1305",
+            "password": "$uuid"
         }
     ],
     "outbounds": [
@@ -148,43 +162,24 @@ EOF
 
 ```
 
-Shadowsocks
-
-```SH
-ss_port=$(shuf -i 20000-60000 -n 1) 
-ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-ss"
-echo ''
-echo ${ss_link}
-echo ''
-echo ${ss_link} > shadowsocks.txt
-
-cat << EOF
-        {
-            "type": "shadowsocks",
-            "tag": "ss-in",
-            "listen": "::",
-            "listen_port": $ss_port,
-            "network": "tcp",
-            "method": "chacha20-ietf-poly1305",
-            "password": "$uuid"
-        }
-EOF
-```
-
 ```bash
 # echo "Here is the link for v2rayN and v2rayNG :"
 echo ""
-cat vless.txt
+cat sub.txt | grep -e "^vless"
 echo ""
-cat vless.txt | qrencode -t ANSI 
+cat sub.txt | grep -e "^vless" | qrencode -t ANSI 
 echo ""
-cat tuic.txt
+cat sub.txt | grep -e "^tuic"
 echo ""
-cat tuic.txt | qrencode -t ANSI 
+cat sub.txt | grep -e "^tuic" | qrencode -t ANSI 
 echo ""
-cat anytls.txt
+cat sub.txt | grep -e "^anytls"
 echo ""
-cat anytls.txt | qrencode -t ANSI 
+cat sub.txt | grep -e "^anytls" | qrencode -t ANSI 
+echo ""
+cat sub.txt | grep -e "^ss"
+echo ""
+cat sub.txt | grep -e "^ss" | qrencode -t ANSI 
 echo ""
 ```
 

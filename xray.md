@@ -34,7 +34,8 @@ public_key=$(echo "$keys" | awk '/Public key:/ {print $3}')
 short_id=$(openssl rand -hex 8)
 # ws_path='/'$(echo $uuid | cut -d '-' -f 1)
 
-# VLESS-Vision-REALITY
+ss_port=$(shuf -i 20000-60000 -n 1) 
+
 cat > /usr/local/etc/xray/config.json << EOF
 {
     "log": {
@@ -75,7 +76,16 @@ cat > /usr/local/etc/xray/config.json << EOF
                     "quic"
                 ]
             }
-        }
+        },
+        {
+            "listen": "127.0.0.1",
+            "port": $ss_port,
+            "protocol": "shadowsocks",
+            "settings": {
+                "method": "chacha20-ietf-poly1305",
+                "password": "$uuid"
+            }
+        }  
     ],
     "outbounds": [
         {
@@ -97,14 +107,27 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color/Reset
 
 vless_link="vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#$hostname-VLESS"
-echo ${vless_link} > vless.txt
+echo ${vless_link} > sub.txt
 echo ''
 echo -e "${YELLOW}${vless_link}${NC}"
 echo ''
-cat vless.txt | qrencode -t ANSI 
+# cat sub.txt | qrencode -t ANSI 
 # qrencode -t ANSI "$vless_link"
 # qrencode -o qr.png "$vless_link"
 
+ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-ss"
+echo ${ss_link} >> sub.txt
+
+# echo "Here is the link for v2rayN and v2rayNG :"
+echo ""
+cat sub.txt | grep -e "^vless"
+echo ""
+cat sub.txt | grep -e "^vless" | qrencode -t ANSI 
+echo ""
+cat sub.txt | grep -e "^ss"
+echo ""
+cat sub.txt | grep -e "^ss" | qrencode -t ANSI 
+echo ""
 #----------------------------------
 systemctl enable xray
 systemctl restart xray
@@ -117,29 +140,6 @@ systemctl status xray
 
 # 实时日志
 # journalctl -u xray -o cat -f
-```
-
-Shadowsocks
-
-```SH
-ss_port=$(shuf -i 20000-60000 -n 1) 
-ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-ss"
-echo ''
-echo ${ss_link}
-echo ''
-echo ${ss_link} > shadowsocks.txt
-
-cat << EOF
-        {
-            "listen": "0.0.0.0",
-            "port": $ss_port,
-            "protocol": "shadowsocks",
-            "settings": {
-                "method": "chacha20-ietf-poly1305",
-                "password": "$uuid"
-            }
-        }  
-EOF
 ```
 
 routing
