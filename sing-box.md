@@ -205,7 +205,7 @@ replace reality target site
 old_server="www.sega.com" 
 dest_server="www.lovelive-anime.jp"
 
-sed -i "s_${old_server}_${dest_server}_" vless.txt
+sed -i "s_${old_server}_${dest_server}_" sub.txt
 sed -i "s_${old_server}_${dest_server}_" /etc/sing-box/config.json
 
 systemctl restart sing-box
