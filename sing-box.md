@@ -60,7 +60,7 @@ echo $anytls_link >> sub.txt
 
 # shadowsocks
 ss_port=$(shuf -i 20000-60000 -n 1) 
-ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-ss"
+ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS"
 echo ${ss_link} >> sub.txt
 
 # 将默认的配置文件删除，并写入
