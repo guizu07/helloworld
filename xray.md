@@ -101,8 +101,8 @@ echo ${vless_link} > vless.txt
 echo ''
 echo -e "${YELLOW}${vless_link}${NC}"
 echo ''
-cat vless.txt | qrencode -t UTF8 
-# qrencode -t UTF8 "$vless_link"
+cat vless.txt | qrencode -t ANSI 
+# qrencode -t ANSI "$vless_link"
 # qrencode -o qr.png "$vless_link"
 
 #----------------------------------

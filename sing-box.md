@@ -176,15 +176,15 @@ EOF
 echo ""
 cat vless.txt
 echo ""
-cat vless.txt | qrencode -t UTF8 
+cat vless.txt | qrencode -t ANSI 
 echo ""
 cat tuic.txt
 echo ""
-cat tuic.txt | qrencode -t UTF8 
+cat tuic.txt | qrencode -t ANSI 
 echo ""
 cat anytls.txt
 echo ""
-cat anytls.txt | qrencode -t UTF8 
+cat anytls.txt | qrencode -t ANSI 
 echo ""
 ```
 
