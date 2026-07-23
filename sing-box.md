@@ -65,7 +65,7 @@ ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss
 echo ${ss_link} >> sub.txt
 
 # 将默认的配置文件删除，并写入
-rm -f /etc/sing-box/config.json
+# rm -f /etc/sing-box/config.json
 cat << EOF > /etc/sing-box/config.json
 {
   "log": {
