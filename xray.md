@@ -38,65 +38,65 @@ ss_port=$(shuf -i 20000-60000 -n 1)
 
 cat > /usr/local/etc/xray/config.json << EOF
 {
-    "log": {
-        "loglevel": "info"
-    },
-    "inbounds": [
-        {
-            "port": $port,
-            "protocol": "vless",
-            "settings": {
-                "clients": [
-                    {
-                        "id": "$uuid",
-                        "flow": "xtls-rprx-vision"
-                    }
-                ],
-                "decryption": "none"
-            },
-            "streamSettings": {
-                "network": "tcp",
-                "security": "reality",
-                "realitySettings": {
-                    "dest": "$dest_server:443",
-                    "serverNames": [
-                        "$dest_server"
-                    ],
-                    "privateKey": "$private_key",
-                    "shortIds": [
-                        "$short_id"
-                    ]
-                }
-            },
-            "sniffing": {
-                "enabled": true,
-                "destOverride": [
-                    "http",
-                    "tls",
-                    "quic"
-                ]
-            }
-        },
-        {
-            "listen": "127.0.0.1",
-            "port": $ss_port,
-            "protocol": "shadowsocks",
-            "settings": {
-                "method": "chacha20-ietf-poly1305",
-                "password": "$uuid"
-            }
-        }  
-    ],
-    "outbounds": [
-        {
-            "protocol": "freedom",
-            "tag": "direct"
-        },
-        {
-            "protocol": "blackhole",
-            "tag": "block"
+  "log": {
+    "loglevel": "info"
+  },
+  "inbounds": [
+    {
+      "port": $port,
+      "protocol": "vless",
+      "settings": {
+        "clients": [
+          {
+            "id": "$uuid",
+            "flow": "xtls-rprx-vision"
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "reality",
+        "realitySettings": {
+          "dest": "$dest_server:443",
+          "serverNames": [
+            "$dest_server"
+          ],
+          "privateKey": "$private_key",
+          "shortIds": [
+            "$short_id"
+          ]
         }
-    ]
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls",
+          "quic"
+        ]
+      }
+    },
+    {
+      "listen": "127.0.0.1",
+      "port": $ss_port,
+      "protocol": "shadowsocks",
+      "settings": {
+        "method": "chacha20-ietf-poly1305",
+        "password": "$uuid"
+      }
+    }  
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct"
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "block"
+    }
+  ]
 }
 EOF
 
@@ -148,25 +148,25 @@ systemctl status xray
 routing
 
 ```json
-    "routing": {
-        "domainStrategy": "IPIfNonMatch",
-        "rules": [
-            {
-                "type": "field",
-                "ip": [
-                    "geoip:private", "geoip:cn"
-                ],
-                "outboundTag": "block"
-            },
-            {
-                "type": "field",
-                "protocol": [
-                    "bittorrent"
-                ],
-                "outboundTag": "block"
-            }
-        ]
-    }
+  "routing": {
+    "domainStrategy": "IPIfNonMatch",
+    "rules": [
+      {
+        "type": "field",
+        "ip": [
+          "geoip:private", "geoip:cn"
+        ],
+        "outboundTag": "block"
+      },
+      {
+        "type": "field",
+        "protocol": [
+          "bittorrent"
+        ],
+        "outboundTag": "block"
+      }
+    ]
+  }
 ```
 
 #### [RealiTLScanner](https://github.com/XTLS/RealiTLScanner)

@@ -68,96 +68,96 @@ echo ${ss_link} >> sub.txt
 rm -f /etc/sing-box/config.json
 cat << EOF > /etc/sing-box/config.json
 {
-    "log": {
-        "level": "info",
-        "timestamp": true
+  "log": {
+    "level": "info",
+    "timestamp": true
+  },
+  "inbounds": [
+    {
+      "type": "vless",
+      "tag": "vless-in",
+      "listen": "::",
+      "listen_port": $port,
+      "users": [
+        {
+          "uuid": "$uuid",
+          "flow": "xtls-rprx-vision"
+        }
+      ],
+      "tls": {
+        "enabled": true,
+        "server_name": "$dest_server",
+        "reality": {
+          "enabled": true,
+          "handshake": {
+            "server": "$dest_server",
+            "server_port": 443
+          },
+          "private_key": "$private_key",
+          "short_id": [
+            "$short_id"
+          ]
+        }
+      }
     },
-    "inbounds": [
+    {
+      "type": "tuic",
+      "tag": "tuic-in",
+      "listen": "::",
+      "listen_port": $tuic_port,
+      "users": [
         {
-            "type": "vless",
-            "tag": "vless-in",
-            "listen": "::",
-            "listen_port": $port,
-            "users": [
-                {
-                    "uuid": "$uuid",
-                    "flow": "xtls-rprx-vision"
-                }
-            ],
-            "tls": {
-                "enabled": true,
-                "server_name": "$dest_server",
-                "reality": {
-                    "enabled": true,
-                    "handshake": {
-                        "server": "$dest_server",
-                        "server_port": 443
-                    },
-                    "private_key": "$private_key",
-                    "short_id": [
-                        "$short_id"
-                    ]
-                }
-            }
-        },
-        {
-            "type": "tuic",
-            "tag": "tuic-in",
-            "listen": "::",
-            "listen_port": $tuic_port,
-            "users": [
-                {
-                    "uuid": "$uuid",
-                    "password": "$tuic_pwd"
-                }
-            ],
-            "congestion_control": "bbr",
-            "tls": {
-                "enabled": true,
-                "alpn": [
-                    "h3"
-                ],
-                "certificate_path": "/etc/sing-box/cert.crt",
-                "key_path": "/etc/sing-box/private.key"
-            }
-        },
-        {
-            "type": "anytls",
-            "tag": "anytls-in",
-            "listen": "::",
-            "listen_port": ${anytls_port},
-            "users": [
-                {
-                  "password":"${uuid}"
-                }
-            ],
-            "padding_scheme": [],
-            "tls":{
-                "enabled": true,
-                "certificate_path": "/etc/sing-box/cert.crt",
-                "key_path": "/etc/sing-box/private.key"
-            }
-        },
-        {
-            "type": "shadowsocks",
-            "tag": "ss-in",
-            "listen": "127.0.0.1",
-            "listen_port": $ss_port,
-            "network": "tcp",
-            "method": "chacha20-ietf-poly1305",
-            "password": "$uuid"
+          "uuid": "$uuid",
+          "password": "$tuic_pwd"
         }
-    ],
-    "outbounds": [
+      ],
+      "congestion_control": "bbr",
+      "tls": {
+        "enabled": true,
+        "alpn": [
+          "h3"
+        ],
+        "certificate_path": "/etc/sing-box/cert.crt",
+        "key_path": "/etc/sing-box/private.key"
+      }
+    },
+    {
+      "type": "anytls",
+      "tag": "anytls-in",
+      "listen": "::",
+      "listen_port": ${anytls_port},
+      "users": [
         {
-            "type": "direct",
-            "tag": "direct"
-        },
-        {
-            "type": "block",
-            "tag": "block"
+          "password":"${uuid}"
         }
-    ]
+      ],
+      "padding_scheme": [],
+      "tls":{
+        "enabled": true,
+        "certificate_path": "/etc/sing-box/cert.crt",
+        "key_path": "/etc/sing-box/private.key"
+      }
+    },
+    {
+      "type": "shadowsocks",
+      "tag": "ss-in",
+      "listen": "127.0.0.1",
+      "listen_port": $ss_port,
+      "network": "tcp",
+      "method": "chacha20-ietf-poly1305",
+      "password": "$uuid"
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    }
+  ]
 }
 EOF
 
