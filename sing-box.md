@@ -43,15 +43,15 @@ public_key=$(echo $keys | awk -F " " '{print $4}')
 # vless + tls
 # vless://$uuid@$IP:$port?type=tcp&encryption=none&flow=xtls-rprx-vision&security=tls&sni=${sni}&allowInsecure=1&fp=chrome#${hostname}-VLESS
 
+# shadowsocks
+ss_port=$(shuf -i 20000-60000 -n 1) 
+
 # tuic v5
 tuic_port=$(shuf -i 20000-60000 -n 1)
 tuic_pwd=$(openssl rand -hex 8)
 
 # anytls
 anytls_port=$(shuf -i 20000-60000 -n 1)
-
-# shadowsocks
-ss_port=$(shuf -i 20000-60000 -n 1) 
 
 cat << EOF > sub.txt
 vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#${hostname}-VLESS
