@@ -54,13 +54,15 @@ tuic_pwd=$(openssl rand -hex 8)
 anytls_port=$(shuf -i 20000-60000 -n 1)
 
 cat << EOF > sub.txt
+
+ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS
+
 vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#${hostname}-VLESS
 
 tuic://${uuid}:${tuic_pwd}@${IP}:${tuic_port}?sni=$sni&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${hostname}-TUIC
 
 anytls://$uuid@${IP}:$anytls_port?&sni=$sni&insecure=1&fp=chrome#${hostname}-AnyTLS
 
-ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS
 EOF
 
 # 将默认的配置文件删除，并写入
@@ -72,6 +74,15 @@ cat << EOF > /etc/sing-box/config.json
     "timestamp": true
   },
   "inbounds": [
+    {
+      "type": "shadowsocks",
+      "tag": "ss-in",
+      "listen": "127.0.0.1",
+      "listen_port": $ss_port,
+      "network": "tcp",
+      "method": "chacha20-ietf-poly1305",
+      "password": "$uuid"
+    },
     {
       "type": "vless",
       "tag": "vless-in",
@@ -136,15 +147,6 @@ cat << EOF > /etc/sing-box/config.json
         "certificate_path": "/etc/sing-box/cert.crt",
         "key_path": "/etc/sing-box/private.key"
       }
-    },
-    {
-      "type": "shadowsocks",
-      "tag": "ss-in",
-      "listen": "127.0.0.1",
-      "listen_port": $ss_port,
-      "network": "tcp",
-      "method": "chacha20-ietf-poly1305",
-      "password": "$uuid"
     }
   ],
   "outbounds": [

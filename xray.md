@@ -37,9 +37,11 @@ short_id=$(openssl rand -hex 8)
 ss_port=$(shuf -i 20000-60000 -n 1) 
 
 cat << EOF > sub.txt
-vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#${hostname}-VLESS
 
 ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS
+
+vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#${hostname}-VLESS
+
 EOF
 
 cat > /usr/local/etc/xray/config.json << EOF
@@ -48,6 +50,15 @@ cat > /usr/local/etc/xray/config.json << EOF
     "loglevel": "info"
   },
   "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": $ss_port,
+      "protocol": "shadowsocks",
+      "settings": {
+        "method": "chacha20-ietf-poly1305",
+        "password": "$uuid"
+      }
+    },
     {
       "port": $port,
       "protocol": "vless",
@@ -81,15 +92,6 @@ cat > /usr/local/etc/xray/config.json << EOF
           "tls",
           "quic"
         ]
-      }
-    },
-    {
-      "listen": "127.0.0.1",
-      "port": $ss_port,
-      "protocol": "shadowsocks",
-      "settings": {
-        "method": "chacha20-ietf-poly1305",
-        "password": "$uuid"
       }
     }  
   ],
