@@ -36,6 +36,12 @@ short_id=$(openssl rand -hex 8)
 
 ss_port=$(shuf -i 20000-60000 -n 1) 
 
+cat << EOF > sub.txt
+vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#${hostname}-VLESS
+
+ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS
+EOF
+
 cat > /usr/local/etc/xray/config.json << EOF
 {
   "log": {
@@ -106,17 +112,12 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color/Reset
 
-vless_link="vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#$hostname-VLESS"
-echo ${vless_link} > sub.txt
 echo ''
-echo -e "${YELLOW}${vless_link}${NC}"
+echo -e "${YELLOW}ok${NC}"
 echo ''
 # cat sub.txt | qrencode -t ANSIUTF8 
 # qrencode -t ANSIUTF8 "$vless_link"
 # qrencode -o qr.png "$vless_link"
-
-ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS"
-echo ${ss_link} >> sub.txt
 
 ```
 

@@ -40,10 +40,6 @@ keys=$(sing-box generate reality-keypair)
 private_key=$(echo $keys | awk -F " " '{print $2}')
 public_key=$(echo $keys | awk -F " " '{print $4}')
 
-# 生成 vless + reality 分享链接
-vless_link="vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#${hostname}-VLESS"
-echo ${vless_link} > sub.txt
-
 # vless + tls
 # vless://$uuid@$IP:$port?type=tcp&encryption=none&flow=xtls-rprx-vision&security=tls&sni=${sni}&allowInsecure=1&fp=chrome#${hostname}-VLESS
 
@@ -51,18 +47,21 @@ echo ${vless_link} > sub.txt
 tuic_port=$(shuf -i 20000-60000 -n 1)
 tuic_pwd=$(openssl rand -hex 8)
 
-tuic_link="tuic://${uuid}:${tuic_pwd}@${IP}:${tuic_port}?sni=$sni&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${hostname}-TUIC"
-echo $tuic_link >> sub.txt
-
 # anytls
 anytls_port=$(shuf -i 20000-60000 -n 1)
-anytls_link="anytls://$uuid@${IP}:$anytls_port?&sni=$sni&insecure=1&fp=chrome#${hostname}-AnyTLS"
-echo $anytls_link >> sub.txt
 
 # shadowsocks
 ss_port=$(shuf -i 20000-60000 -n 1) 
-ss_link="ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS"
-echo ${ss_link} >> sub.txt
+
+cat << EOF > sub.txt
+vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#${hostname}-VLESS
+
+tuic://${uuid}:${tuic_pwd}@${IP}:${tuic_port}?sni=$sni&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${hostname}-TUIC
+
+anytls://$uuid@${IP}:$anytls_port?&sni=$sni&insecure=1&fp=chrome#${hostname}-AnyTLS
+
+ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS
+EOF
 
 # 将默认的配置文件删除，并写入
 # rm -f /etc/sing-box/config.json
