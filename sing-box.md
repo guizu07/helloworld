@@ -55,9 +55,9 @@ anytls_port=$(shuf -i 20000-60000 -n 1)
 
 cat << EOF > sub.txt
 
-ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS
-
 vless://$uuid@$IP:$port?encryption=none&flow=xtls-rprx-vision&security=reality&sni=$dest_server&fp=chrome&pbk=$public_key&sid=$short_id&type=tcp#${hostname}-VLESS
+
+ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${hostname}-SS
 
 tuic://${uuid}:${tuic_pwd}@${IP}:${tuic_port}?sni=$sni&congestion_control=bbr&udp_relay_mode=native&alpn=h3&allow_insecure=1#${hostname}-TUIC
 
@@ -74,15 +74,6 @@ cat << EOF > /etc/sing-box/config.json
     "timestamp": true
   },
   "inbounds": [
-    {
-      "type": "shadowsocks",
-      "tag": "ss-in",
-      "listen": "127.0.0.1",
-      "listen_port": $ss_port,
-      "network": "tcp",
-      "method": "chacha20-ietf-poly1305",
-      "password": "$uuid"
-    },
     {
       "type": "vless",
       "tag": "vless-in",
@@ -109,6 +100,15 @@ cat << EOF > /etc/sing-box/config.json
           ]
         }
       }
+    },
+    {
+      "type": "shadowsocks",
+      "tag": "ss-in",
+      "listen": "127.0.0.1",
+      "listen_port": $ss_port,
+      "network": "tcp",
+      "method": "chacha20-ietf-poly1305",
+      "password": "$uuid"
     },
     {
       "type": "tuic",
