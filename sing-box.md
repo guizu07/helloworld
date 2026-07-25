@@ -40,9 +40,6 @@ keys=$(sing-box generate reality-keypair)
 private_key=$(echo $keys | awk -F " " '{print $2}')
 public_key=$(echo $keys | awk -F " " '{print $4}')
 
-# vless + tls
-# vless://$uuid@$IP:$port?type=tcp&encryption=none&flow=xtls-rprx-vision&security=tls&sni=${sni}&allowInsecure=1&fp=chrome#${hostname}-VLESS
-
 # shadowsocks
 ss_port=$(shuf -i 20000-40000 -n 1) 
 
@@ -52,6 +49,9 @@ tuic_pwd=$(openssl rand -hex 8)
 
 # anytls
 anytls_port=$(shuf -i 20000-40000 -n 1)
+
+# vless + tls
+# vless://$uuid@$IP:$port?type=tcp&encryption=none&flow=xtls-rprx-vision&security=tls&sni=${sni}&allowInsecure=1&fp=chrome#${hostname}-VLESS
 
 cat << EOF > sub.txt
 
