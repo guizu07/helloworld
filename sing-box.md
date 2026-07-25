@@ -18,8 +18,8 @@ systemctl status sing-box
 ```bash
 #!/bin/bash
 
-# 自签证书 www.bing.com
-sni='www.bing.com'
+# 自签证书 www.bing.com d1.awsstatic.com
+sni='d1.awsstatic.com'
 openssl ecparam -genkey -name prime256v1 -out /etc/sing-box/private.key
 openssl req -new -x509 -days 200 -key /etc/sing-box/private.key -out /etc/sing-box/cert.crt -subj "/CN=${sni}"
 
