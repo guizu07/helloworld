@@ -44,7 +44,7 @@ ss://$(echo -n chacha20-ietf-poly1305:${uuid} | base64 -w 0)@${IP}:${ss_port}#${
 
 EOF
 
-cat > /usr/local/etc/xray/config.json << EOF
+cat > xray.json << EOF
 {
   "log": {
     "loglevel": "info"
@@ -107,6 +107,8 @@ cat > /usr/local/etc/xray/config.json << EOF
   ]
 }
 EOF
+
+cp -f xray.json /usr/local/etc/xray/config.json
 
 # Define colors as variables
 RED='\033[0;31m'

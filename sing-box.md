@@ -67,7 +67,7 @@ EOF
 
 # 将默认的配置文件删除，并写入
 # rm -f /etc/sing-box/config.json
-cat << EOF > /etc/sing-box/config.json
+cat << EOF > sing.json
 {
   "log": {
     "level": "info",
@@ -161,6 +161,8 @@ cat << EOF > /etc/sing-box/config.json
   ]
 }
 EOF
+
+cp -f sing.json /etc/sing-box/config.json
 
 ```
 
