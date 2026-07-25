@@ -171,13 +171,13 @@ cat sub.txt | grep -e "^vless"
 echo ""
 cat sub.txt | grep -e "^vless" | qrencode -t ANSIUTF8 
 echo ""
-cat sub.txt | grep -e "^tuic"
-echo ""
-cat sub.txt | grep -e "^tuic" | qrencode -t ANSIUTF8 
-echo ""
 cat sub.txt | grep -e "^anytls"
 echo ""
 cat sub.txt | grep -e "^anytls" | qrencode -t ANSIUTF8 
+echo ""
+cat sub.txt | grep -e "^tuic"
+echo ""
+cat sub.txt | grep -e "^tuic" | qrencode -t ANSIUTF8 
 echo ""
 cat sub.txt | grep -e "^ss"
 echo ""
