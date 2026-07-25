@@ -12,8 +12,8 @@ bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release
 ```sh
 #!/bin/bash
 
-# reality target site: www.lovelive-anime.jp www.sega.com
-dest_server=www.lovelive-anime.jp
+# reality target site
+dest_server=www.sega.com
 hostname=US
 
 port=443

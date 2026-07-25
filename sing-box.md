@@ -23,8 +23,8 @@ sni='d1.awsstatic.com'
 openssl ecparam -genkey -name prime256v1 -out /etc/sing-box/private.key
 openssl req -new -x509 -days 200 -key /etc/sing-box/private.key -out /etc/sing-box/cert.crt -subj "/CN=${sni}"
 
-# reality target site: www.lovelive-anime.jp www.sega.com d1.awsstatic.com
-dest_server="www.lovelive-anime.jp" 
+# reality target site
+dest_server="www.sega.com" 
 hostname=US
 
 IP=$(curl -s ipv4.wtfismyip.com/text)
