@@ -18,7 +18,7 @@ hostname=US
 
 port=443
 IP=1.2.3.4
-# port=$(shuf -i 20000-60000 -n 1) 
+# port=$(shuf -i 20000-40000 -n 1) 
 uuid=892dabdf-83e6-4783-862c-228f4d3a3dd9
 private_key=EATh8IAcm_8BlmouL7cBc8S7S0SEKwDZ-iczwyLdEF0
 public_key=UhDDXKj_mmkQB3t_h67dCdUcoPntqWAkYad9ILVcrUw
@@ -34,7 +34,7 @@ public_key=$(echo "$keys" | awk '/Public key:/ {print $3}')
 short_id=$(openssl rand -hex 8)
 # ws_path='/'$(echo $uuid | cut -d '-' -f 1)
 
-ss_port=$(shuf -i 20000-60000 -n 1) 
+ss_port=$(shuf -i 20000-40000 -n 1) 
 
 cat << EOF > sub.txt
 
