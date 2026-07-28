@@ -150,6 +150,8 @@ systemctl status xray
 # journalctl -u xray -o cat -f
 ```
 
+ws path `/api/v1/stream`
+
 routing
 
 ```json
