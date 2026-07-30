@@ -5,7 +5,7 @@
 sudo apt-get update
 sudo apt-get install -y jq openssl qrencode
 
-bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --version 1.8.4
+bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --version 1.8.6
 ```
 #### 
 
