@@ -201,20 +201,6 @@ systemctl status sing-box
 journalctl -u sing-box -o cat -f
 ```
 
-replace reality target site
-
-```bash
-
-# reality target site: www.lovelive-anime.jp www.sega.com
-old_server="www.sega.com" 
-dest_server="www.lovelive-anime.jp"
-
-sed -i "s_${old_server}_${dest_server}_" sub.txt
-sed -i "s_${old_server}_${dest_server}_" /etc/sing-box/config.json
-
-systemctl restart sing-box
-``` 
-
 ### reference
 - [chika0801/sing-box-examples](https://github.com/chika0801/sing-box-examples/)
 - [deathline94/sing-REALITY-Box](https://github.com/deathline94/sing-REALITY-Box)
